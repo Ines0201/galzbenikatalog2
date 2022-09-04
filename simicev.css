@@ -1,0 +1,80 @@
+body{
+	background-color: #ddddbf ;
+	color: maroon;
+	font-size: 18px;
+	font-family:Courier, Arial, Helvetica, sans-serif;
+}
+
+#gornji{
+	text-align: left;
+	padding: 20x;
+	margin: 25px;
+}
+
+.tablica1 li{
+	font-size: 18px;
+	font-weight: bold;
+	color:red;
+}
+footer{
+	color:maroon;
+	float: middle ;
+	padding: 30x;
+	margin: 15px;
+}
+	
+#autor{
+	float: left;
+}
+	
+
+#sadrzaj{
+	width: 60%;
+	float: left;
+	
+}
+
+#slika1{
+	padding: 10x;
+	margin: 15px;
+	float: left;
+	width: 300px;
+	
+}
+
+#login{
+	border: solid gray 1px;
+	width: 20%;
+	border-radius: 5px;
+	margin: 100px auto;
+	background: white;
+	padding: 50px;
+}
+
+#btn{
+	color: #fff;
+	background: #337ab7;
+	padding: 5px;
+	margin-left:69%;
+}
+
+
+
+.red{
+	background-color: #ddddbf;
+}
+
+.red:hover{
+	background-color: #bc8a5f;
+	transition: 1s
+}
+
+#poveznica{
+	color:black;
+	font-size: 24px;
+}
+
+
+#poveznica:hover{
+	color:maroon;
+	font-weight:bolder;

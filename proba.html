@@ -1,0 +1,119 @@
+<?php
+	define("POSLUZITELJ","localhost");
+	define("BAZA","iwa_2021_vz_projekt");
+	define("BAZA_KORISNIK","iwa_2021");
+	define("BAZA_LOZINKA","foi2021");
+	
+	function spojiSeNaBazu(){
+		$veza=mysqli_connect(POSLUZITELJ,BAZA_KORISNIK,BAZA_LOZINKA);
+		if(!$veza)echo "GREŠKA: Problem sa spajanjem u datoteci baza.php funkcija spojiSeNaBazu: ".mysqli_connect_error();
+		mysqli_select_db($veza,BAZA);
+		if(mysqli_error($veza)!=="")echo "GREŠKA: Problem sa odabirom baze u baza.php funkcija spojiSeNaBazu: ".mysqli_error($veza);
+		mysqli_set_charset($veza,"utf8");
+		if(mysqli_error($veza)!=="")echo "GREŠKA: Problem sa odabirom baze u baza.php funkcija spojiSeNaBazu: ".mysqli_error($veza);
+		return $veza;
+	}
+
+	function izvrsiUpit($veza,$upit){
+		$rezultat=mysqli_query($veza,$upit);
+		if(mysqli_error($veza)!=="")echo "GREŠKA: Problem sa upitom: ".$upit." : u datoteci baza.php funkcija izvrsiUpit: ".mysqli_error($veza);
+		return $rezultat;
+	}
+
+	function zatvoriVezuNaBazu($veza){
+		mysqli_close($veza);
+	}
+?>
+<?php
+	if(session_id()=="")session_start(); //start session samo ??????
+
+	$trenutna=basename($_SERVER["PHP_SELF"]);
+	$putanja=$_SERVER['REQUEST_URI'];
+	$aktivni_korisnik=0;
+	$aktivni_korisnik_tip=-1;
+	$vel_str=10; // broj prikazanih elemenata na stranici s korisnicima PROMIJENI
+	$vel_str_video=10; 	// broj prikazanih elemenata na stranici s video materijalima PROMIJENI
+
+	if(isset($_SESSION['aktivni_korisnik'])){
+		$aktivni_korisnik=$_SESSION['aktivni_korisnik'];
+		$aktivni_korisnik_ime=$_SESSION['aktivni_korisnik_ime'];
+		$aktivni_korisnik_tip=$_SESSION['aktivni_korisnik_tip'];
+		$aktivni_korisnik_id=$_SESSION["aktivni_korisnik_id"];
+	}
+?>
+<!DOCTYPE html>
+<html lang="hr">
+	<head>
+		<title>Ines Šimićev - Glazbeni katalog</title>
+		<meta charset="UTF-8"/>
+		<meta name="autor" content="Ines Šimićev">
+		<meta name="date" content="15.06.2022">
+		<link href="isimicev.css" rel="stylesheet" type="text/css">
+		
+	</head>
+	<body>
+		<header>
+		
+		<h1>
+		<a><strong>Glazbeni katalog</strong></a>
+		</h1>
+		<nav>
+			<a href="index.html"class="poveznica"> Početna </a> <br><br><br><br>
+			<a href="korisnici.html"class="poveznica"> Korisnici </a><br><br><br><br>
+			<a href="redateljske_kuce.html"class="poveznica"> Redateljske kuće </a><br><br><br><br>
+			<a href="pjesme.html"class="poveznica"> Pjesme </a><br><br><br><br>
+			<a href="o_autoru.html"class="poveznica"> O autoru </a><br><br><br><br>
+		</nav>
+		
+			<?php
+					echo "Trenutna lokacija: ".$trenutna."<br/>";
+					if($aktivni_korisnik===0){
+						echo "Status: Neprijavljeni korisnik<br/>";
+						echo "<a onclick='sakrijMeni();' class='link' href='#'>sakrij meni</a><br/>";
+						echo "<a class='link' href='login.php'>prijava</a>";
+					}
+					else{
+						echo "Status: </strong>Dobrodošli, $aktivni_korisnik_ime<br/>";
+						echo "<a onclick='sakrijMeni();' class='link' href='#'>sakrij meni</a><br/>";
+						echo "<a class='link' href='login.php?logout=1'>odjava</a>";
+					}
+				?>
+		</header>
+		<nav id="navigacija">
+			<?php
+				switch(true){
+					case $trenutna:
+						switch($aktivni_korisnik_tip>=0) {
+							case 'true':
+								echo '<a href="index.php"';
+								if($trenutna=="index.php")echo ' class="aktivna"';
+								echo ">POČETAK</a>";
+								echo '<a href="korisnici.php"';
+								if($trenutna=="korisnici.php")echo ' class="aktivna"';
+								echo ">KORISNICI</a>";
+								echo '<a href="materijali.php"';
+								if($trenutna=="materijali.php")echo ' class="aktivna"';
+								echo ">FILMOVI</a>";
+								echo '<a href="posudbe.php"';
+								if($trenutna=="posudbe.php")echo ' class="aktivna"';
+								echo ">POSUDBE</a>";
+								break;
+
+							default:
+								echo '<a href="index.php"';
+								if($trenutna=="index.php")echo ' class="aktivna"';
+								echo ">POČETAK</a>";
+								echo '<a href="korisnici.php"';
+								if($trenutna=="korisnici.php")echo ' class="aktivna"';
+								echo ">KORISNICI</a>";
+								echo '<a href="materijali.php"';
+								if($trenutna=="materijali.php")echo ' class="aktivna"';
+								echo ">FILMOVI</a>";
+								break;
+						}
+
+					default:
+						break;
+				}
+			?>
+		</nav>
